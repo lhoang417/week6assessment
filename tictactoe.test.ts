@@ -21,17 +21,50 @@ test('I can start a game', async () => {//calling a test with the first paramete
 test("upper left square adds an x", async() => {//calling a test with the first parameter is the name of the test, then call async to use the functions
     let topLeft = await (await driver).findElement(By.id('cell-0'))//assigning the top left square by it's element id to a variable called topLeft
     await topLeft.click()//.click() is called to actually click on the button automatically
+    expect(await topLeft.getText()).toEqual('X')//call this to expect a value, .toEqual follows expect as the value that equals what is expected
     await driver.sleep(2000)//.sleep() is a built in function that doesn't immediately close out the browser 2000MS is 2 sec
 })
 
 test("upper right square adds an x", async()=>{//calling a test with the first parameter is the name of the test, then call async to use the functions
     let topRight = await driver.findElement(By.id('cell-2'))//assigning the top right square by it's element id to a variable called topRight
     await topRight.click()//.click() is called to actually click on the button automatically
+    expect(await topRight.getText()).toEqual('X')//call this to expect a value, .toEqual follows expect as the value that equals what is expected
     await driver.sleep(2000)//.sleep() is a built in function that doesn't immediately close out the browser 2000MS is 2 sec
 })
 
 test("middle square adds an O to a square", async() => {//calling a test with the first parameter is the name of the test, then call async to use the functions
-    let middleTop = await driver.findElement(By.id('cell-1'))//assigning the center top square by it's element id to a variable called middleTop
-    await middleTop.click()//.click() is called to actually click on the button automatically
+    //restarting the app to do a new test
+    driver.navigate().refresh()//stepping into the driver above and using .nagivate().refresh() to simulate hitting the refresh button
+    await driver.sleep(2000)
+    let button = await (await driver).findElement(By.id('start-game'));//assigning the Start button to a variable called button
+    await button.click();//.click() is called to actually click on the button automatically
+    let topLeft = await driver.findElement(By.id('cell-0'))//assigning the top left square by it's element id to a variable called topLeft
+    let topRight = await driver.findElement(By.id('cell-2'))//assigning the top right square by it's element id to a variable called topRight
+    let middleCenter = await driver.findElement(By.id('cell-4'))//assigning the center square by it's element id to a variable called middleCenter
+
+    //play out turns
+    topLeft.click()//.click() is called to actually click on the button automatically
     await driver.sleep(2000)//.sleep() is a built in function that doesn't immediately close out the browser 2000MS is 2 sec
+
+    topRight.click()//.click() is called to actually click on the button automatically
+    await driver.sleep(2000)//.sleep() is a built in function that doesn't immediately close out the browser 2000MS is 2 sec
+
+    middleCenter.click()//.click() is called to actually click on the button automatically
+    await driver.sleep(2000)//.sleep() is a built in function that doesn't immediately close out the browser 2000MS is 2 sec
+
+    //determine the amount of Xs and Os played and get length
+    const oMoves = await driver.findElements(By.xpath('//td[text()="O"]'))
+    const xMoves = await driver.findElements(By.xpath('//td[text()="X"]'))
+
+    //determines if amount of moves played by each player matches
+    //EXAMPLE 1
+    // let validMoves = false;
+
+    // if (oMoves.length === xMoves.length){
+    //     validMoves = true
+    // }
+    // expect(validMoves).toBeTruthy()
+
+    //EXAMPLE 2
+    expect(oMoves.length === xMoves.length).toBeTruthy()
 })
