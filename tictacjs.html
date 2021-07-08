@@ -180,12 +180,12 @@
       //
       // Return true if placed (spot was empty); false if not placed (spot already full)
 
-      // if (board[cellNumber] === null) {
+      if (board[cellNumber] === null) {
           board[cellNumber] = pieceType;
           return true;
-      // }
+      }
 
-      // return false;
+      return false;
   }
 
 
@@ -193,11 +193,12 @@
       // Make next possible move for the computer
 
       for (var i = 0; i < 9; i++) {
-          if (i === 3 || i === 7){
-              board[i] = "o";
-              return board;
-          }
+        //   if (i === 3 || i === 7){
+        //       board[i] = "O";
+        //       return board;
+        //   }
           if (board[i] === null) {
+              board[i] = Math.floor(Math.random() * 9);
               board[i] = "O";
               return board;
           }
@@ -212,7 +213,7 @@
       var gameOver = false;
 
       if (winner) {
-          $("h1").text(winner + " lost");
+          $("h1").text(winner + " won");
           gameOver = true;
       }
 
@@ -240,7 +241,7 @@
       //     - check if game is over
 
       if (placePiece(cellNumber, "X")) {
-          updateBoard();
+          updateBoard(); 
 
           if (! checkGameOver()) {
               computerMove();
